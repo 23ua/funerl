@@ -38,7 +38,7 @@ undefined
 {error,badarg}
 ```
 
-#### Using ```either:map/2``` to prevent nested case expressions:
+#### Using ```either:map/2``` and ```either:bind/2``` to prevent nested case expressions:
 ```erlang
 -spec request_order() -> either:either(term()).
 request_order(Order) ->
@@ -49,21 +49,24 @@ request_order(Order) ->
 validate_order(Order) ->
     either:left(order_invalid).
 
--spec db_write(atom(), Order :: term()) -> either:either().
+-spec db_write(atom(), Order :: term()) -> term().
 db_write(Table, Value) when is_atom(Table) ->
     ...
     Result = db:insert(Table, Value),
     ...
-    either:right(Result);
+    Result;
 
-db_write(_, _) ->
-    either:left(wrong_query).
 
 -spec add_order(term()) -> either:either().
 add_order(Order) ->
     Res = request_order(Order),
-    MaybeNewOrder = either:map(fun validate_order/1, Res),
-    db_write(order, MaybeNewOrder).
+    MaybeNewOrder = either:bind(fun validate_order/1, Res),
+
+    WriteFun = fun(Ord) ->
+        db_write(order, Ord)
+    end,
+    either:map(WriteFun, MaybeNewOrder).
+
 ```
 Returns ```{error, order_invalid}```:
 ```erlang
