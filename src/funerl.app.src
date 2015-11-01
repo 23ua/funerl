@@ -1,0 +1,11 @@
+{application, funerl,
+ [
+  {description, "Couple modules to make erlang more functional"},
+  {vsn, "0.1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
