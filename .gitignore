@@ -1,0 +1,7 @@
+*.iml
+*.beam
+ebin/
+.rebar/
+.idea/
+erl_crash.dump
+
