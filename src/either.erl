@@ -19,8 +19,8 @@
     left/1,
     right/1,
     map/2,
-    partition/1
-]).
+    partition/1,
+    bind/2]).
 
 
 -type either() :: left() | right().
@@ -36,6 +36,14 @@ either(LeftFun, RightFun, Either) ->
         {error, _} ->
             LeftFun(Either)
     end.
+
+
+-spec bind(either(), fun((term()) -> either())) -> any().
+bind({ok, Val}, MonadFun) ->
+    MonadFun(Val);
+
+bind({error, _} = Left, _) ->
+    Left.
 
 
 -spec lefts([either()]) -> [either()].

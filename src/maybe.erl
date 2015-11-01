@@ -22,7 +22,8 @@
     map_maybe/2,
     maybe_to_list/1,
     list_to_maybe/1,
-    maybe/3]).
+    maybe/3,
+    bind/2]).
 
 
 -type maybe()   :: just() | nothing().
@@ -38,6 +39,14 @@ map(Fun, {ok, Val}) ->
 
 map(_, undefined) ->
     undefined.
+
+
+-spec bind(maybe(), fun((term()) -> maybe())) -> any().
+bind({ok, Val}, MonadFun) ->
+    MonadFun(Val);
+
+bind(undefined, _) ->
+    nothing().
 
 
 -spec maybe(Default :: any(), fun((any()) -> any()), maybe()) -> any().
