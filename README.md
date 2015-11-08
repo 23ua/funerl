@@ -1,4 +1,16 @@
 # funerl
+**What?**
+
+Maybe and either monads interfaces based on similar modules in Haskell.
+
+**Why?**
+
+Just for fun.
+It was an attempt to solve nested cases "code smell" or "antipattern" in Erlang.
+
+**Should I use this library?**
+
+Definitely not, just pass on.
 
 ### Maybe monad
 
@@ -25,18 +37,8 @@ undefined
 4> either:map(fun(X) -> X * 2 end, Error).
 {error,badarg}
 ```
+You can use these monads to handle errors.
 
-#### You can use these monads to handle errors:
-```erlang
-1> Result = either:right(23).
-{ok,23}
-2> Error = either:left(badarg).
-{error,badarg}
-3> either:map(fun(X) -> X * 2 end, Result).
-{ok,46}
-4> either:map(fun(X) -> X * 2 end, Error).
-{error,badarg}
-```
 
 #### Using ```either:map/2``` and ```either:bind/2``` to prevent nested case expressions:
 ```erlang
